@@ -1,3 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Croque2Dent - Click & Collect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #fff8f0;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      background: #ff7a00;
+      padding: 15px;
+    }
+
+    header img {
+      width: 120px;
+      border-radius: 50%;
+    }
+
+    h1 {
+      color: white;
+      margin: 10px 0 0 0;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    h2 {
+      color: #ff7a00;
+    }
+
+    h3 {
+      margin-top: 30px;
+    }
+
+    .produit {
+      background: white;
+      margin: 10px;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    button {
+      background: #ff7a00;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #panier {
+      margin-top: 20px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    input, select {
+      padding: 10px;
+      width: 80%;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.png" alt="Croque2Dent Logo">
+  <h1>Croque2Dent</h1>
+  <p style="color:white; font-size:14px;">
+    📍 19 boulevard Jean Moulin – 23300 La Souterraine<br>
+    📞 05 55 63 05 69
+  </p>
+</header>
+
+<div class="container">
+
+  <h2>🥪 Commander</h2>
+
+  <!-- MENUS -->
+  <h3>📦 Menus</h3>
+
+  <div class="produit">
+    Menu Crousti Jambon Fromage + Boisson 50cl - 9.50€
+    <br><button onclick="ajouter('Menu Crousti Jambon Fromage',9.5)">Ajouter</button>
+  </div>
+
+  <div class="produit">
+    Menu Sandwich + Boisson 50cl - 9€
+    <br><button onclick="ajouter('Menu Sandwich',9)">Ajouter</button>
+  </div>
+
+  <div class="produit">
+    Menu Salade + Boisson 50cl - 10€
+    <br><button onclick="ajouter('Menu Salade',10)">Ajouter</button>
+  </div>
+
+  <!-- SANDWICHS -->
+  <h3>🥪 Sandwichs</h3>
+
+  <div class="produit">
+    Sandwich Américain - 8€
+    <br><button onclick="ajouter('Sandwich Américain',8)">Ajouter</button>
+  </div>
+
+  <div class="produit">
+    Jambon Fromage - 5.50€
+    <br><button onclick="ajouter('Jambon Fromage',5.5)">Ajouter</button>
+  </div>
+
+  <div class="produit">
+    Poulet Crudités - 6.50€
+    <br><button onclick="ajouter('Poulet Crudités',6.5)">Ajouter</button>
+  </div>
+
+  <!-- CROUSTIS -->
+  <h3>🍗 Croustis</h3>
+
+  <div class="produit">
+    Crousti Jambon Fromage - 6€
+    <br><button onclick="ajouter('Crousti Jambon Fromage',6)">Ajouter</button>
+  </div>
+
+  <div class="produit">
+    Crousti Poulet Chèvre - 6.50€
+    <br><button onclick="ajouter('Crousti Poulet Chèvre',6.5)">Ajouter</button>
+  </div>
+
+  <div class="produit">
+    Crousti Poulet Curry - 6.50€
+    <br><button onclick="ajouter('Crousti Poulet Curry',6.5)">Ajouter</button>
+  </div>
+
+  <!-- SALADES -->
+  <h3>🥗 Salades</h3>
+
+  <div class="produit">
+    Salade César (poulet) - 7.50€
+    <br><button onclick="ajouter('Salade César',7.5)">Ajouter</button>
+  </div>
+
+  <div class="produit">
+    Salade Jambon Fromage - 7.50€
+    <br><button onclick="ajouter('Salade Jambon Fromage',7.5)">Ajouter</button>
+  </div>
+
+  <div class="produit">
+    Salade Jambon Cru Chèvre - 7.50€
+    <br><button onclick="ajouter('Salade Jambon Cru Chèvre',7.5)">Ajouter</button>
+  </div>
+
+  <!-- PANIER -->
+  <div id="panier">
+    <h3>🛒 Panier</h3>
+    <div id="liste"></div>
+    <p>Total : <span id="total">0.00</span> €</p>
+  </div>
+
+  <!-- COMMANDE -->
+  <h3>📦 Finaliser</h3>
+
+  <input type="text" id="nom" placeholder="Nom">
+  <input type="text" id="tel" placeholder="Téléphone">
+
+  <label>Heure de retrait :</label><br>
+  <input type="time" id="heure">
+  <p style="font-size:12px;color:gray;">⏱️ Minimum 1h après maintenant</p>
+
+  <label>Mode de paiement :</label><br>
+  <select id="paiement">
+    <option value="">Choisir</option>
+    <option value="cb">💳 Paiement CB</option>
+    <option value="sur_place">💶 Paiement sur place</option>
+  </select>
+
+  <br><br>
+  <button onclick="commander()">Valider la commande</button>
+
+</div>
+
+<!-- STRIPE -->
 <script src="https://js.stripe.com/v3/"></script>
 
 <script>
@@ -78,3 +272,6 @@ function commander() {
   afficher();
 }
 </script>
+
+</body>
+</html>
