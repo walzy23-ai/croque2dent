@@ -251,7 +251,26 @@ function commander() {
   console.log("Commande :", commande);
 
   if (paiement === "cb") {
-    alert("💳 Redirection vers paiement sécurisé...");
+  alert("💳 Redirection vers paiement sécurisé...");
+
+  fetch("/api/checkout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ panier })
+  })
+  .then(res => res.json())
+  .then(data => {
+    return stripe.redirectToCheckout({ sessionId: data.id });
+  })
+  .catch(err => {
+    alert("Erreur paiement");
+    console.error(err);
+  });
+
+  return;
+}
     // Stripe à brancher ici
   } else {
     alert("Commande validée ✅ Paiement sur place");
@@ -261,7 +280,9 @@ function commander() {
   total = 0;
   afficher();
 }
+<script src="https://js.stripe.com/v3/"></script>
 </script>
+const stripe = Stripe("pk_test_51TFGZlAVHDm8vbSovaFf9JhGZv8XNMLxMGOEbySZIgHOIaliFATiuVDVVrmULtfss85rJML7dAmH4VS3A4jqj6KB00uQal85g3");
 
 </body>
 </html>
