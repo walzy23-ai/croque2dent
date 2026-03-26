@@ -1,10 +1,10 @@
-import Stripe from "stripe";
+const Stripe = require("stripe");
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+module.exports = async (req, res) => {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).send("Method Not Allowed");
   }
 
   try {
@@ -18,25 +18,25 @@ export default async function handler(req, res) {
       price_data: {
         currency: "eur",
         product_data: {
-          name: item.nom
+          name: item.nom,
         },
-        unit_amount: Math.round(item.prix * 100)
+        unit_amount: Math.round(item.prix * 100),
       },
-      quantity: 1
+      quantity: 1,
     }));
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items,
       mode: "payment",
-      success_url: "https://croque2dent-9wvi.vercel.app/success",
-      cancel_url: "https://croque2dent-9wvi.vercel.app/cancel"
+      success_url: "https://croque2dent-9wvi.vercel.app",
+      cancel_url: "https://croque2dent-9wvi.vercel.app",
     });
 
     res.status(200).json({ id: session.id });
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Erreur Stripe" });
+    console.error("ERREUR STRIPE :", err);
+    res.status(500).json({ error: err.message });
   }
-}
+};
