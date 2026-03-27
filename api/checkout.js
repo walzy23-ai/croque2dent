@@ -4,6 +4,16 @@ const nodemailer = require("nodemailer");
 module.exports = async (req, res) => {
   console.log("🚀 API appelée");
 
+  let body = req.body;
+
+  if (typeof body === "string") {
+    body = JSON.parse(body);
+  }
+
+  const { panier, nom, tel, heure } = body || {};
+
+  console.log("📦 Données reçues :", panier, nom, tel, heure);
+
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
   const transporter = nodemailer.createTransport({
@@ -15,11 +25,6 @@ module.exports = async (req, res) => {
   });
 
   try {
-    const { panier, nom, tel, heure } = req.body;
-
-    console.log("📦 Données reçues :", panier, nom, tel, heure);
-
-    // 🔥 TEST EMAIL DIRECT
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
@@ -29,7 +34,7 @@ module.exports = async (req, res) => {
 
     console.log("✅ TEST EMAIL ENVOYÉ");
 
-    const line_items = panier.map(item => ({
+    const line_items = (panier || []).map(item => ({
       price_data: {
         currency: "eur",
         product_data: { name: item.nom },
