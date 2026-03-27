@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
     // 📧 EMAIL VIA RESEND
     await resend.emails.send({
       from: "Croque2Dent <onboarding@resend.dev>",
-      to: "walzy23@hotmail.fr",
+      to: "delivered@resend.dev",
       subject: "📦 Nouvelle commande Croque2Dent",
       html: `
         <h2>📦 Nouvelle commande</h2>
