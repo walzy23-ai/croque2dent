@@ -31,14 +31,16 @@ const result = await resend.emails.send({
 
 console.log("📧 RESULT RESEND :", result);
       subject: "📦 Nouvelle commande Croque2Dent",
-      html: `
-        <h2>📦 Nouvelle commande</h2>
-        <p><strong>Nom :</strong> ${nom}</p>
-        <p><strong>Téléphone :</strong> ${tel}</p>
-        <p><strong>Heure :</strong> ${heure}</p>
-        <p><strong>Total :</strong> ${(panier || []).reduce((t,p)=>t+p.prix,0)} €</p>
-      `,
-    });
+     await resend.emails.send({
+  from: "Croque2Dent <onboarding@resend.dev>",
+  to: "walzy23@hotmail.fr",
+  subject: "📦 Nouvelle commande Croque2Dent",
+  html: `<h2>📦 Nouvelle commande</h2>
+  <p><strong>Nom :</strong> ${nom}</p>
+  <p><strong>Téléphone :</strong> ${tel}</p>
+  <p><strong>Heure :</strong> ${heure}</p>
+  <p><strong>Total :</strong> ${(panier || []).reduce((t,p)=>t+p.prix,0)} €</p>`
+});
 
     console.log("✅ EMAIL ENVOYÉ AVEC RESEND");
 
