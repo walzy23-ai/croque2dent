@@ -33,7 +33,7 @@ console.log("📧 RESULT RESEND :", result);
       subject: "📦 Nouvelle commande Croque2Dent",
      await resend.emails.send({
   from: "Croque2Dent <onboarding@resend.dev>",
-  to: "walzy23@hotmail.fr",
+  to: "walzy23@gmail.com",
   subject: "📦 Nouvelle commande Croque2Dent",
   html: `<h2>📦 Nouvelle commande</h2>
   <p><strong>Nom :</strong> ${nom}</p>
