@@ -20,9 +20,16 @@ module.exports = async (req, res) => {
 
   try {
     // 📧 EMAIL VIA RESEND
-    await resend.emails.send({
-      from: "Croque2Dent <onboarding@resend.dev>",
-      to: "delivered@resend.dev",
+   console.log("📧 AVANT ENVOI EMAIL");
+
+const result = await resend.emails.send({
+  from: "onboarding@resend.dev",
+  to: "delivered@resend.dev",
+  subject: "TEST",
+  html: "<p>TEST OK</p>",
+});
+
+console.log("📧 RESULT RESEND :", result);
       subject: "📦 Nouvelle commande Croque2Dent",
       html: `
         <h2>📦 Nouvelle commande</h2>
