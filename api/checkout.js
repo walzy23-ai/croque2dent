@@ -1,5 +1,7 @@
 const Stripe = require("stripe");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = async (req, res) => {
   console.log("🚀 API appelée");
@@ -16,23 +18,22 @@ module.exports = async (req, res) => {
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
   try {
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
-      subject: "🔥 TEST EMAIL CROQUE2DENT",
-      text: "SI TU VOIS CE MESSAGE → EMAIL OK",
+    // 📧 EMAIL VIA RESEND
+    await resend.emails.send({
+      from: "Croque2Dent <onboarding@resend.dev>",
+      to: "walzy23@hotmail.fr",
+      subject: "📦 Nouvelle commande Croque2Dent",
+      html: `
+        <h2>📦 Nouvelle commande</h2>
+        <p><strong>Nom :</strong> ${nom}</p>
+        <p><strong>Téléphone :</strong> ${tel}</p>
+        <p><strong>Heure :</strong> ${heure}</p>
+        <p><strong>Total :</strong> ${(panier || []).reduce((t,p)=>t+p.prix,0)} €</p>
+      `,
     });
 
-    console.log("✅ TEST EMAIL ENVOYÉ");
+    console.log("✅ EMAIL ENVOYÉ AVEC RESEND");
 
     const line_items = (panier || []).map(item => ({
       price_data: {
